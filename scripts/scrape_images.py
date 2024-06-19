@@ -4,6 +4,7 @@ import os
 import time
 from urllib.parse import urljoin, urlparse
 import urllib.robotparser
+import argparse
 
 def get_soup(url):
     """Fetches the content from the URL and returns a BeautifulSoup object."""
@@ -68,7 +69,10 @@ def scrape_images(base_url, folder_path, delay=1.0):
         print(f"Error fetching {base_url}: {e}")
 
 if __name__ == "__main__":
-    # Example usage
-    website_url = 'https://www.shutterstock.com/search/granny-smith?image_type=photo'
-    output_folder = '/content/drive/MyDrive/Colab Notebooks/scrape_images/apples/granny_smith'
-    scrape_images(website_url, output_folder, delay=1.0)
+    parser = argparse.ArgumentParser(description='Scrape images from a website.')
+    parser.add_argument('website_url', type=str, help='The URL of the website to scrape images from.')
+    parser.add_argument('output_folder', type=str, help='The folder to save the scraped images.')
+    parser.add_argument('--delay', type=float, default=1.0, help='Delay between downloads to respect rate limits.')
+
+    args = parser.parse_args()
+    scrape_images(args.website_url, args.output_folder, args.delay)
